@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_agree"]
+script = ExtResource("3")
+id = "weather_agree"
+label = "It really is!"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_joke"]
+script = ExtResource("3")
+id = "weather_joke"
+label = "Perfect coffee weather!"
+tone = "humorous"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_dismiss"]
+script = ExtResource("3")
+id = "weather_dismiss"
+label = "I suppose."
+tone = "dismissive"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_weather"]
+script = ExtResource("2")
+id = "smalltalk_weather_1"
+speaker = "customer"
+text = "Nice weather we're having, isn't it?"
+reactions = [SubResource("reaction_agree"), SubResource("reaction_joke"), SubResource("reaction_dismiss")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "smalltalk_weather"
+category = "smalltalk"
+weight = 1.0
+lines = [SubResource("line_weather")]
+personality_weights = {"chatty": 1.5, "shy": 0.5}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["weather", "casual"]

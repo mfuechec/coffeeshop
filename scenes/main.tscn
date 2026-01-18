@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://main_scene"]
+[gd_scene load_steps=6 format=3 uid="uid://bwr24xrkpe7av"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://bk1gx5td0hitp" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/ui/customer_avatar.gd" id="2_avatar"]
+[ext_resource type="Script" path="res://scripts/ui/shop_background.gd" id="3_background"]
+[ext_resource type="Script" path="res://scripts/ui/interactive_station.gd" id="4_drink_station"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -11,38 +15,41 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.18, 0.12, 0.08, 1)
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_background")
 
 [node name="ShopView" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Counter" type="Panel" parent="ShopView"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.1
-anchor_top = 0.6
-anchor_right = 0.9
-anchor_bottom = 0.75
+visible = false
 
 [node name="CustomerArea" type="Control" parent="ShopView"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.3
-anchor_top = 0.15
-anchor_right = 0.7
-anchor_bottom = 0.55
+anchor_left = 0.32
+anchor_top = 0.12
+anchor_right = 0.68
+anchor_bottom = 0.62
 
-[node name="CustomerSprite" type="Sprite2D" parent="ShopView/CustomerArea"]
-position = Vector2(320, 200)
-scale = Vector2(2, 2)
+[node name="CustomerAvatar" type="Control" parent="ShopView/CustomerArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_avatar")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -72,10 +79,7 @@ anchor_left = 0.1
 anchor_top = 0.78
 anchor_right = 0.9
 anchor_bottom = 0.98
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
+script = ExtResource("5_dialogue_ui")
 
 [node name="VBox" type="VBoxContainer" parent="UI/DialoguePanel"]
 layout_mode = 1
@@ -86,6 +90,8 @@ offset_left = 20.0
 offset_top = 10.0
 offset_right = -20.0
 offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="DialogueText" type="RichTextLabel" parent="UI/DialoguePanel/VBox"]
 layout_mode = 2
@@ -96,6 +102,15 @@ text = "Welcome to your coffee shop! Customers will arrive throughout the day."
 [node name="ChoicesContainer" type="HBoxContainer" parent="UI/DialoguePanel/VBox"]
 layout_mode = 2
 alignment = 1
+
+[node name="DrinkStation" type="Control" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+script = ExtResource("4_drink_station")
 
 [node name="QueueIndicator" type="HBoxContainer" parent="UI"]
 anchors_preset = 1

@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="Resource_friendly"]
+script = ExtResource("3")
+id = "friendly_greeting"
+label = "Welcome!"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="Resource_curious"]
+script = ExtResource("3")
+id = "curious_greeting"
+label = "How are you?"
+tone = "curious"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="Resource_busy"]
+script = ExtResource("3")
+id = "busy_greeting"
+label = "What can I get you?"
+tone = "neutral"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_greeting"]
+script = ExtResource("2")
+id = "greeting_basic_1"
+speaker = "customer"
+text = "Hi there!"
+reactions = [SubResource("Resource_friendly"), SubResource("Resource_curious"), SubResource("Resource_busy")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "greeting_basic"
+category = "greeting"
+weight = 1.0
+lines = [SubResource("line_greeting")]
+personality_weights = {}
+min_relationship = -1
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = []

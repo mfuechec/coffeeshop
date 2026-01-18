@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_sympathize"]
+script = ExtResource("3")
+id = "busy_sympathize"
+label = "Hang in there!"
+tone = "supportive"
+effects = {"relationship": 1, "memory": "shared_busy_day"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_relate"]
+script = ExtResource("3")
+id = "busy_relate"
+label = "Same here, honestly."
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_practical"]
+script = ExtResource("3")
+id = "busy_practical"
+label = "Coffee helps."
+tone = "neutral"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_busy"]
+script = ExtResource("2")
+id = "smalltalk_busy_1"
+speaker = "customer"
+text = "It's been such a busy week..."
+reactions = [SubResource("reaction_sympathize"), SubResource("reaction_relate"), SubResource("reaction_practical")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "smalltalk_busy"
+category = "smalltalk"
+weight = 1.0
+lines = [SubResource("line_busy")]
+personality_weights = {"tired": 2.0, "anxious": 1.5, "cheerful": 0.3}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["work", "stress"]

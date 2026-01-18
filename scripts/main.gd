@@ -3,13 +3,14 @@ extends Control
 
 @onready var money_label: Label = $UI/TopBar/MoneyLabel
 @onready var reputation_label: Label = $UI/TopBar/ReputationLabel
-@onready var dialogue_text: RichTextLabel = $UI/DialoguePanel/VBox/DialogueText
-@onready var choices_container: HBoxContainer = $UI/DialoguePanel/VBox/ChoicesContainer
+@onready var dialogue_panel: Panel = $UI/DialoguePanel
 @onready var queue_label: Label = $UI/QueueIndicator/QueueLabel
-@onready var customer_sprite: Sprite2D = $ShopView/CustomerArea/CustomerSprite
+@onready var customer_avatar: Control = $ShopView/CustomerArea/CustomerAvatar
+@onready var drink_station: Control = $UI/DrinkStation
 
 var current_customer: Dictionary = {}
 var dialogue_state: String = "idle"
+var _awaiting_order: bool = false
 
 
 func _ready() -> void:
@@ -18,6 +19,10 @@ func _ready() -> void:
 	CustomerManager.customer_arrived.connect(_on_customer_arrived)
 	CustomerManager.queue_updated.connect(_update_queue_display)
 	TimeManager.time_of_day_changed.connect(_on_time_changed)
+	drink_station.drink_made.connect(_on_drink_made)
+
+	# Connect to DialogueManager signals
+	DialogueManager.conversation_ended.connect(_on_dialogue_ended)
 
 	_update_ui()
 	_show_welcome_message()
@@ -42,8 +47,7 @@ func _update_queue_display() -> void:
 
 func _show_welcome_message() -> void:
 	var greeting := TimeManager.get_greeting()
-	dialogue_text.text = "%s! Your coffee shop is open.\nCustomers will drop by throughout the day." % greeting
-	_clear_choices()
+	dialogue_panel.show_message("%s! Your coffee shop is open.\nCustomers will drop by throughout the day." % greeting)
 
 
 func _on_customer_arrived(customer: Dictionary) -> void:
@@ -54,54 +58,52 @@ func _on_customer_arrived(customer: Dictionary) -> void:
 func _greet_customer(customer: Dictionary) -> void:
 	current_customer = customer
 	dialogue_state = "greeting"
+	_awaiting_order = false
 
-	# Show customer (placeholder - would be actual sprite)
-	customer_sprite.modulate = Color.WHITE
+	# Hide drink station from any previous interaction
+	drink_station.hide_station()
 
-	var greeting_text := ""
-	if customer.is_returning:
-		greeting_text = "[b]%s[/b] is back!\n" % customer.name
-		if customer.relationship_level > 2:
-			greeting_text += "\"Hey! The usual, please.\""
-		else:
-			greeting_text += "\"Hi again! Can I get a %s?\"" % customer.order
-	else:
-		greeting_text = "A new customer approaches!\n"
-		greeting_text += "[b]%s[/b]: \"Hi! Could I get a %s, please?\"" % [customer.name, customer.order]
+	# Show customer avatar
+	customer_avatar.set_customer(customer)
 
-	dialogue_text.text = greeting_text
-	_show_order_choices()
+	# Start conversation through DialogueManager
+	DialogueManager.start_conversation(customer)
 
 
-func _show_order_choices() -> void:
-	_clear_choices()
+func _on_dialogue_ended(customer: Dictionary) -> void:
+	print("main._on_dialogue_ended called, current_customer empty: %s, _awaiting_order: %s" % [current_customer.is_empty(), _awaiting_order])
+	# Conversation ended, show the drink station for order
+	if not current_customer.is_empty() and not _awaiting_order:
+		_awaiting_order = true
+		_show_order_phase()
 
-	# Add drink buttons
-	var drinks := ["Espresso", "Latte", "Cappuccino", "Americano", "Mocha"]
-	for drink in drinks:
-		var btn := Button.new()
-		btn.text = drink
-		btn.pressed.connect(_on_drink_selected.bind(drink))
-		choices_container.add_child(btn)
+
+func _show_order_phase() -> void:
+	# Show the drink station for making drinks
+	drink_station.show_station()
 
 
 func _clear_choices() -> void:
-	for child in choices_container.get_children():
-		child.queue_free()
+	drink_station.hide_station()
 
 
-func _on_drink_selected(drink: String) -> void:
-	var result := CustomerManager.serve_current_customer(drink)
+func _on_drink_made(drink: String) -> void:
+	if current_customer.is_empty():
+		return
+
+	var result: Dictionary = CustomerManager.serve_current_customer(drink)
 	if result.is_empty():
 		return
 
-	var correct := drink == result.order
+	var correct: bool = drink == result.order
 	GameManager.serve_customer(result, correct)
+	drink_station.hide_station()
 
 
 func _on_customer_served(customer_data: Dictionary) -> void:
 	current_customer = {}
-	customer_sprite.modulate = Color.TRANSPARENT
+	_awaiting_order = false
+	customer_avatar.clear_customer()
 	dialogue_state = "served"
 
 	# Show result
@@ -111,7 +113,7 @@ func _on_customer_served(customer_data: Dictionary) -> void:
 	else:
 		message = "[b]%s[/b]: \"Um... this isn't what I ordered.\"\n[i]+$%d (no tip)[/i]" % [customer_data.name, customer_data.order_price]
 
-	dialogue_text.text = message
+	dialogue_panel.show_message(message)
 	_clear_choices()
 
 	# Check for next customer after a delay
@@ -135,7 +137,7 @@ func _show_idle_message() -> void:
 		"The coffee machine hums gently.",
 		"Sunlight streams through the window."
 	]
-	dialogue_text.text = messages.pick_random()
+	dialogue_panel.show_message(messages.pick_random())
 	_clear_choices()
 
 
@@ -148,4 +150,4 @@ func _on_time_changed(period: String) -> void:
 	}
 
 	if dialogue_state == "idle" and current_customer.is_empty():
-		dialogue_text.text = period_messages.get(period, "")
+		dialogue_panel.show_message(period_messages.get(period, ""))

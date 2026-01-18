@@ -14,7 +14,7 @@ config/name="Coffee Shop"
 config/description="A cozy background game where you run a small coffee shop, serve customers, and build relationships through small talk."
 config/version="0.1.0"
 run/main_scene="res://scenes/main.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://assets/icon.svg"
 
 [autoload]
@@ -23,25 +23,25 @@ GameManager="*res://scripts/autoload/game_manager.gd"
 CustomerManager="*res://scripts/autoload/customer_manager.gd"
 SaveManager="*res://scripts/autoload/save_manager.gd"
 TimeManager="*res://scripts/autoload/time_manager.gd"
+DialogueManager="*res://scripts/autoload/dialogue_manager.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/size/resizable=true
+window/energy_saving/keep_screen_on=false
 window/size/min_width=640
 window/size/min_height=480
-window/energy_saving/keep_screen_on=false
-
-[rendering]
-
-renderer/rendering_method="forward_plus"
-textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.2, 0.15, 0.1, 1)
 
 [input]
 
 interact={
 "deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)]
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
 }
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.2, 0.15, 0.1, 1)

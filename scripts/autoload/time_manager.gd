@@ -98,3 +98,11 @@ func get_ambient_modifier() -> float:
 		TimePeriod.NIGHT:
 			return 0.4  # Cozy, dark
 	return 1.0
+
+
+func get_day() -> int:
+	return current_day
+
+
+func get_hour() -> int:
+	return current_hour
