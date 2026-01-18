@@ -1,0 +1,41 @@
+# Godot 4 .gitignore
+
+# Godot-specific ignores
+.godot/
+*.translation
+
+# Exported builds
+export/
+builds/
+*.exe
+*.x86_64
+*.pck
+*.zip
+
+# Mono/C# ignores (if using C#)
+.mono/
+data_*/
+mono_crash.*.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Steam SDK (keep binaries out of repo)
+addons/godotsteam/sdk/
+
+# Local dev files
+*.local
+.env

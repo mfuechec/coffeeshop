@@ -1,0 +1,112 @@
+[gd_scene load_steps=2 format=3 uid="uid://main_scene"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.18, 0.12, 0.08, 1)
+
+[node name="ShopView" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Counter" type="Panel" parent="ShopView"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.6
+anchor_right = 0.9
+anchor_bottom = 0.75
+
+[node name="CustomerArea" type="Control" parent="ShopView"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.15
+anchor_right = 0.7
+anchor_bottom = 0.55
+
+[node name="CustomerSprite" type="Sprite2D" parent="ShopView/CustomerArea"]
+position = Vector2(320, 200)
+scale = Vector2(2, 2)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TopBar" type="HBoxContainer" parent="UI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+
+[node name="MoneyLabel" type="Label" parent="UI/TopBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "$100"
+
+[node name="Spacer" type="Control" parent="UI/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ReputationLabel" type="Label" parent="UI/TopBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "★ 0"
+
+[node name="DialoguePanel" type="Panel" parent="UI"]
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.78
+anchor_right = 0.9
+anchor_bottom = 0.98
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
+
+[node name="DialogueText" type="RichTextLabel" parent="UI/DialoguePanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Welcome to your coffee shop! Customers will arrive throughout the day."
+
+[node name="ChoicesContainer" type="HBoxContainer" parent="UI/DialoguePanel/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="QueueIndicator" type="HBoxContainer" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_top = 60.0
+offset_right = -10.0
+offset_bottom = 90.0
+grow_horizontal = 0
+
+[node name="QueueLabel" type="Label" parent="UI/QueueIndicator"]
+layout_mode = 2
+text = "Queue: 0"
