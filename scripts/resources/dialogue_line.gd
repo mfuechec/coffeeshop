@@ -88,6 +88,10 @@ func _evaluate_condition(customer: Dictionary) -> bool:
 		var flag_key: String = condition.substr(9)
 		var flags: Dictionary = customer.get("life_flags", {})
 		return flags.get(flag_key, false)
+	elif condition.begins_with("!has_flag:"):
+		var flag_key: String = condition.substr(10)
+		var flags: Dictionary = customer.get("life_flags", {})
+		return not flags.get(flag_key, false)
 	elif condition.begins_with("personality:"):
 		var expected: String = condition.substr(12)
 		return customer.get("personality", "") == expected

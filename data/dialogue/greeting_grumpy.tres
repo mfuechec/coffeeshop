@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_efficient"]
+script = ExtResource("3")
+id = "grumpy_greet_efficient"
+label = "Coming right up."
+tone = "neutral"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_humor"]
+script = ExtResource("3")
+id = "grumpy_greet_humor"
+label = "Monday energy, I feel you."
+tone = "humorous"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_push"]
+script = ExtResource("3")
+id = "grumpy_greet_push"
+label = "Good morning to you too!"
+tone = "dismissive"
+effects = {"relationship": -1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "grumpy_greet_main"
+speaker = "customer"
+text = "Coffee. Black. Please."
+reactions = [SubResource("reaction_efficient"), SubResource("reaction_humor"), SubResource("reaction_push")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "greeting_grumpy"
+category = "greeting"
+weight = 1.0
+lines = [SubResource("line_main")]
+personality_weights = {"grumpy": 3.0}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["personality", "grumpy"]

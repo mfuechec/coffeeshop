@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_curious"]
+script = ExtResource("3")
+id = "writer_p2_curious"
+label = "What part is giving you trouble?"
+tone = "curious"
+effects = {"relationship": 1, "memory": "writer_struggles_shared"}
+next_line_id = "writer_p2_detail"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_supportive"]
+script = ExtResource("3")
+id = "writer_p2_supportive"
+label = "Take a break. The words will come."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "writer_struggles_shared"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_dismissive"]
+script = ExtResource("3")
+id = "writer_p2_dismissive"
+label = "Maybe it's just not the right time."
+tone = "dismissive"
+effects = {"relationship": -1, "memory": "writer_struggles_dismissed"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_detail_listen"]
+script = ExtResource("3")
+id = "writer_p2_detail_listen"
+label = "That sounds frustrating."
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_detail_encourage"]
+script = ExtResource("3")
+id = "writer_p2_detail_encourage"
+label = "First drafts are supposed to be messy."
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "writer_p2_main"
+speaker = "customer"
+text = "Remember my novel? I've hit a wall. Every word I write feels wrong."
+reactions = [SubResource("reaction_curious"), SubResource("reaction_supportive"), SubResource("reaction_dismissive")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_detail"]
+script = ExtResource("2")
+id = "writer_p2_detail"
+speaker = "customer"
+text = "The middle part. I know how it starts and ends, but getting there... it's like walking through fog."
+reactions = [SubResource("reaction_detail_listen"), SubResource("reaction_detail_encourage")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "storyline_writer_part2"
+category = "story_beat"
+weight = 1.5
+lines = [SubResource("line_main"), SubResource("line_detail")]
+personality_weights = {"chatty": 1.3, "tired": 1.5, "anxious": 1.2}
+min_relationship = 1
+max_relationship = -1
+required_memories = ["writer_started_novel"]
+blocked_by_memories = ["writer_struggles_shared", "writer_struggles_dismissed"]
+triggers_storyline = ""
+tags = ["creative", "personal", "storyline", "emotional"]

@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_match"]
+script = ExtResource("3")
+id = "chatty_greet_match"
+label = "I'm doing great! How about you?"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_redirect"]
+script = ExtResource("3")
+id = "chatty_greet_redirect"
+label = "Busy but good! What can I get you?"
+tone = "neutral"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_playful"]
+script = ExtResource("3")
+id = "chatty_greet_playful"
+label = "Better now that you're here!"
+tone = "humorous"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "chatty_greet_main"
+speaker = "customer"
+text = "Oh hey hey! How are you doing today? Is it busy? It looks busy! Or maybe not that busy? Anyway, I'm so glad this place is open!"
+reactions = [SubResource("reaction_match"), SubResource("reaction_redirect"), SubResource("reaction_playful")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "greeting_chatty"
+category = "greeting"
+weight = 1.0
+lines = [SubResource("line_main")]
+personality_weights = {"chatty": 3.0}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["personality", "chatty"]

@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_wave"]
+script = ExtResource("3")
+id = "farewell_basic_wave"
+label = "Have a good one!"
+tone = "supportive"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_thanks"]
+script = ExtResource("3")
+id = "farewell_basic_thanks"
+label = "Thanks for stopping by!"
+tone = "neutral"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_enjoy"]
+script = ExtResource("3")
+id = "farewell_basic_enjoy"
+label = "Enjoy your coffee!"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "farewell_basic_main"
+speaker = "customer"
+text = "Well, I should get going. Thanks for the coffee!"
+reactions = [SubResource("reaction_wave"), SubResource("reaction_thanks"), SubResource("reaction_enjoy")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "farewell_basic"
+category = "farewell"
+weight = 1.0
+lines = [SubResource("line_main")]
+personality_weights = {}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["farewell", "basic"]

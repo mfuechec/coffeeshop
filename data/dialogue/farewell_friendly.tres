@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_warm"]
+script = ExtResource("3")
+id = "farewell_friendly_warm"
+label = "Always great to see you!"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_soon"]
+script = ExtResource("3")
+id = "farewell_friendly_soon"
+label = "Hope to see you again soon!"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_day"]
+script = ExtResource("3")
+id = "farewell_friendly_day"
+label = "Have a wonderful day!"
+tone = "supportive"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "farewell_friendly_main"
+speaker = "customer"
+text = "This was really nice. I always enjoy our little chats. Take care!"
+reactions = [SubResource("reaction_warm"), SubResource("reaction_soon"), SubResource("reaction_day")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "farewell_friendly"
+category = "farewell"
+weight = 1.5
+lines = [SubResource("line_main")]
+personality_weights = {"chatty": 1.3, "cheerful": 1.3}
+min_relationship = 2
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["farewell", "friendly", "warm"]

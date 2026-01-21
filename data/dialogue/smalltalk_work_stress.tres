@@ -1,0 +1,103 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_sympathize"]
+script = ExtResource("3")
+id = "work_sympathize"
+label = "That sounds rough."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "shared_work_frustration"}
+next_line_id = "work_vent"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_curious"]
+script = ExtResource("3")
+id = "work_curious"
+label = "What happened?"
+tone = "curious"
+effects = {"relationship": 1}
+next_line_id = "work_explain"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_dismiss"]
+script = ExtResource("3")
+id = "work_dismiss"
+label = "It'll pass."
+tone = "dismissive"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_vent_listen"]
+script = ExtResource("3")
+id = "work_vent_listen"
+label = "I'm here to listen."
+tone = "supportive"
+effects = {"relationship": 2}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_vent_advice"]
+script = ExtResource("3")
+id = "work_vent_advice"
+label = "Have you talked to your manager?"
+tone = "curious"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_vent_joke"]
+script = ExtResource("3")
+id = "work_vent_joke"
+label = "Coffee fixes everything?"
+tone = "humorous"
+effects = {"relationship": 1, "mood": "amused"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_work_main"]
+script = ExtResource("2")
+id = "work_main"
+speaker = "customer"
+text = "Work has been... a lot lately. I needed this coffee break more than you know."
+reactions = [SubResource("reaction_sympathize"), SubResource("reaction_curious"), SubResource("reaction_dismiss")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_work_vent"]
+script = ExtResource("2")
+id = "work_vent"
+speaker = "customer"
+text = "The deadlines keep piling up and nobody seems to care that we're already stretched thin."
+reactions = [SubResource("reaction_vent_listen"), SubResource("reaction_vent_advice"), SubResource("reaction_vent_joke")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_work_explain"]
+script = ExtResource("2")
+id = "work_explain"
+speaker = "customer"
+text = "Just the usual corporate chaos. New project, same unrealistic timeline. You know how it is."
+reactions = [SubResource("reaction_vent_listen"), SubResource("reaction_vent_advice"), SubResource("reaction_vent_joke")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "smalltalk_work_stress"
+category = "smalltalk"
+weight = 1.2
+lines = [SubResource("line_work_main"), SubResource("line_work_vent"), SubResource("line_work_explain")]
+personality_weights = {"tired": 2.0, "anxious": 1.8, "grumpy": 1.5, "cheerful": 0.3}
+min_relationship = 1
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["work", "stress", "venting", "emotional"]

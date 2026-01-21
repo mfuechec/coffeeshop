@@ -1,0 +1,94 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_excited"]
+script = ExtResource("3")
+id = "weekend_excited"
+label = "Sounds like a great time!"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = "weekend_details"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_curious"]
+script = ExtResource("3")
+id = "weekend_curious"
+label = "What are you planning?"
+tone = "curious"
+effects = {"relationship": 1}
+next_line_id = "weekend_plans"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_relax"]
+script = ExtResource("3")
+id = "weekend_relax"
+label = "Rest is important too."
+tone = "neutral"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_details_nice"]
+script = ExtResource("3")
+id = "weekend_details_nice"
+label = "That sounds perfect."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "discussed_weekend_plans"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_details_jealous"]
+script = ExtResource("3")
+id = "weekend_details_jealous"
+label = "Now I'm jealous!"
+tone = "humorous"
+effects = {"relationship": 1, "memory": "discussed_weekend_plans"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_weekend_main"]
+script = ExtResource("2")
+id = "weekend_main"
+speaker = "customer"
+text = "Can't wait for the weekend! I finally have some time off."
+reactions = [SubResource("reaction_excited"), SubResource("reaction_curious"), SubResource("reaction_relax")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_weekend_details"]
+script = ExtResource("2")
+id = "weekend_details"
+speaker = "customer"
+text = "Nothing too fancy, just a hike and maybe trying that new brunch place downtown."
+reactions = [SubResource("reaction_details_nice"), SubResource("reaction_details_jealous")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_weekend_plans"]
+script = ExtResource("2")
+id = "weekend_plans"
+speaker = "customer"
+text = "Honestly? Probably just sleeping in and reading. Pure bliss."
+reactions = [SubResource("reaction_details_nice"), SubResource("reaction_details_jealous")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "smalltalk_weekend"
+category = "smalltalk"
+weight = 1.0
+lines = [SubResource("line_weekend_main"), SubResource("line_weekend_details"), SubResource("line_weekend_plans")]
+personality_weights = {"cheerful": 1.5, "chatty": 1.3, "grumpy": 0.5}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["weekend", "plans", "casual"]

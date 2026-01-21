@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_excited"]
+script = ExtResource("3")
+id = "jobhunter_p2_excited"
+label = "That's amazing! You've got this!"
+tone = "supportive"
+effects = {"relationship": 1, "memory": "job_interview_pending"}
+next_line_id = "jobhunter_p2_detail"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_curious"]
+script = ExtResource("3")
+id = "jobhunter_p2_curious"
+label = "Tell me about the company?"
+tone = "curious"
+effects = {"relationship": 1, "memory": "job_interview_pending"}
+next_line_id = "jobhunter_p2_detail"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_practical"]
+script = ExtResource("3")
+id = "jobhunter_p2_practical"
+label = "Nervous?"
+tone = "neutral"
+effects = {"memory": "job_interview_pending"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_detail_encourage"]
+script = ExtResource("3")
+id = "jobhunter_p2_detail_encourage"
+label = "Sounds perfect for you!"
+tone = "supportive"
+effects = {"relationship": 1, "memory": "player_supported_interview"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_detail_advice"]
+script = ExtResource("3")
+id = "jobhunter_p2_detail_advice"
+label = "Remember to breathe. You'll do great."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "player_supported_interview"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "jobhunter_p2_main"
+speaker = "customer"
+text = "Guess what? I landed an interview! It's next week. A real interview, not just a phone screening!"
+reactions = [SubResource("reaction_excited"), SubResource("reaction_curious"), SubResource("reaction_practical")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_detail"]
+script = ExtResource("2")
+id = "jobhunter_p2_detail"
+speaker = "customer"
+text = "It's this startup doing exactly what I'm passionate about. Small team, big ideas. I've been practicing my answers in the mirror like a total nerd."
+reactions = [SubResource("reaction_detail_encourage"), SubResource("reaction_detail_advice")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "storyline_jobhunter_part2"
+category = "story_beat"
+weight = 1.5
+lines = [SubResource("line_main"), SubResource("line_detail")]
+personality_weights = {"chatty": 1.5, "anxious": 1.4, "cheerful": 1.2}
+min_relationship = 1
+max_relationship = -1
+required_memories = ["job_hunting_started"]
+blocked_by_memories = ["job_interview_pending"]
+triggers_storyline = ""
+tags = ["career", "personal", "storyline", "hopeful"]

@@ -1,0 +1,94 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_interested"]
+script = ExtResource("3")
+id = "events_interested"
+label = "Tell me more!"
+tone = "curious"
+effects = {"relationship": 1}
+next_line_id = "events_details"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_maybe"]
+script = ExtResource("3")
+id = "events_maybe"
+label = "I might check it out."
+tone = "neutral"
+effects = {"memory": "heard_about_local_event"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_not_for_me"]
+script = ExtResource("3")
+id = "events_not_for_me"
+label = "Not really my thing."
+tone = "dismissive"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_details_excited"]
+script = ExtResource("3")
+id = "events_details_excited"
+label = "That sounds amazing!"
+tone = "supportive"
+effects = {"relationship": 1, "memory": "excited_about_local_event"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_details_join"]
+script = ExtResource("3")
+id = "events_details_join"
+label = "Maybe I'll see you there!"
+tone = "supportive"
+effects = {"relationship": 2, "memory": "might_attend_event"}
+next_line_id = ""
+condition = "relationship >= 2"
+
+[sub_resource type="Resource" id="line_events_main"]
+script = ExtResource("2")
+id = "events_main"
+speaker = "customer"
+text = "Have you heard about the street fair this weekend? They're closing off the whole block."
+reactions = [SubResource("reaction_interested"), SubResource("reaction_maybe"), SubResource("reaction_not_for_me")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_events_details"]
+script = ExtResource("2")
+id = "events_details"
+speaker = "customer"
+text = "There's supposed to be live music, food trucks, local artists... The whole neighborhood's buzzing about it."
+reactions = [SubResource("reaction_details_excited"), SubResource("reaction_details_join")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_events_alt"]
+script = ExtResource("2")
+id = "events_alt"
+speaker = "customer"
+text = "The farmers market is expanding next month. Fresh produce and that amazing honey vendor will be back."
+reactions = [SubResource("reaction_interested"), SubResource("reaction_maybe"), SubResource("reaction_not_for_me")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "smalltalk_local_events"
+category = "smalltalk"
+weight = 0.9
+lines = [SubResource("line_events_main"), SubResource("line_events_details"), SubResource("line_events_alt")]
+personality_weights = {"chatty": 1.8, "cheerful": 1.5, "shy": 0.4, "mysterious": 0.5}
+min_relationship = 1
+max_relationship = -1
+required_memories = []
+blocked_by_memories = ["excited_about_local_event"]
+triggers_storyline = ""
+tags = ["local", "events", "community", "social"]

@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_reassure"]
+script = ExtResource("3")
+id = "jobhunter_p3_reassure"
+label = "No news is just no news. Stay hopeful!"
+tone = "supportive"
+effects = {"relationship": 1, "memory": "player_reassured_post_interview"}
+next_line_id = "jobhunter_p3_thanks"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_distract"]
+script = ExtResource("3")
+id = "jobhunter_p3_distract"
+label = "Let's talk about something else. Distraction helps."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "player_distracted_post_interview"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_realistic"]
+script = ExtResource("3")
+id = "jobhunter_p3_realistic"
+label = "Either way, you put yourself out there. That's brave."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "player_realistic_post_interview"}
+next_line_id = "jobhunter_p3_thanks"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_dismiss"]
+script = ExtResource("3")
+id = "jobhunter_p3_dismiss"
+label = "Well, there's always other jobs."
+tone = "dismissive"
+effects = {"relationship": -1, "memory": "player_dismissed_post_interview"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "jobhunter_p3_main"
+speaker = "customer"
+text = "The interview was... I don't know. I think it went well? They said they'd call this week. It's been four days. Four. Days."
+reactions = [SubResource("reaction_reassure"), SubResource("reaction_distract"), SubResource("reaction_realistic"), SubResource("reaction_dismiss")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_thanks"]
+script = ExtResource("2")
+id = "jobhunter_p3_thanks"
+speaker = "customer"
+text = "Thanks for listening. This waiting game is killing me, but at least I have good coffee to get me through it."
+reactions = []
+condition = ""
+ends_conversation = true
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_waiting"]
+script = ExtResource("2")
+id = "jobhunter_p3_waiting"
+speaker = "customer"
+text = "I keep checking my phone every five minutes. This is worse than dating apps, I swear."
+reactions = []
+condition = ""
+ends_conversation = true
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "storyline_jobhunter_part3"
+category = "story_beat"
+weight = 1.8
+lines = [SubResource("line_main"), SubResource("line_thanks"), SubResource("line_waiting")]
+personality_weights = {"anxious": 2.0, "chatty": 1.3, "tired": 1.2}
+min_relationship = 1
+max_relationship = -1
+required_memories = ["job_interview_pending"]
+blocked_by_memories = ["player_reassured_post_interview", "player_distracted_post_interview", "player_realistic_post_interview", "player_dismissed_post_interview"]
+triggers_storyline = ""
+tags = ["career", "personal", "storyline", "emotional", "anxiety"]

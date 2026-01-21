@@ -1,0 +1,86 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_honored"]
+script = ExtResource("3")
+id = "writer_p4_honored"
+label = "I'm honored to be in your story."
+tone = "supportive"
+effects = {"relationship": 3, "memory": "writer_dedication_accepted"}
+next_line_id = "writer_p4_emotional"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_touched"]
+script = ExtResource("3")
+id = "writer_p4_touched"
+label = "That's... wow. Thank you."
+tone = "neutral"
+effects = {"relationship": 2, "memory": "writer_dedication_accepted"}
+next_line_id = "writer_p4_emotional"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_joke"]
+script = ExtResource("3")
+id = "writer_p4_joke"
+label = "Do I get royalties?"
+tone = "humorous"
+effects = {"relationship": 2, "memory": "writer_dedication_joked"}
+next_line_id = "writer_p4_laugh"
+condition = ""
+
+[sub_resource type="Resource" id="line_main_excerpt"]
+script = ExtResource("2")
+id = "writer_p4_main_excerpt"
+speaker = "customer"
+text = "I have something to tell you. The barista in my novel? The one who listens without judgment? That's you. You're in my book."
+reactions = [SubResource("reaction_honored"), SubResource("reaction_touched"), SubResource("reaction_joke")]
+condition = "has_flag:heard_novel_excerpt"
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_main_no_excerpt"]
+script = ExtResource("2")
+id = "writer_p4_main_no_excerpt"
+speaker = "customer"
+text = "I wanted you to know... there's a barista character in my novel. Someone who makes everyone feel welcome. I based them on you."
+reactions = [SubResource("reaction_honored"), SubResource("reaction_touched"), SubResource("reaction_joke")]
+condition = "!has_flag:heard_novel_excerpt"
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_emotional"]
+script = ExtResource("2")
+id = "writer_p4_emotional"
+speaker = "customer"
+text = "This place, these conversations... they kept me writing when I wanted to give up. The dedication page will have your coffee shop's name."
+reactions = []
+condition = ""
+ends_conversation = true
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_laugh"]
+script = ExtResource("2")
+id = "writer_p4_laugh"
+speaker = "customer"
+text = "*laughs* Free coffee for life when I'm a bestseller. Deal?"
+reactions = []
+condition = ""
+ends_conversation = true
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "storyline_writer_part4"
+category = "story_beat"
+weight = 2.5
+lines = [SubResource("line_main_excerpt"), SubResource("line_main_no_excerpt"), SubResource("line_emotional"), SubResource("line_laugh")]
+personality_weights = {"chatty": 1.4, "cheerful": 1.3}
+min_relationship = 3
+max_relationship = -1
+required_memories = ["writer_chapter_celebrated"]
+blocked_by_memories = ["writer_dedication_accepted", "writer_dedication_joked"]
+triggers_storyline = ""
+tags = ["creative", "personal", "storyline", "emotional", "conclusion"]

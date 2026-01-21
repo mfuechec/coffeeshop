@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_supportive"]
+script = ExtResource("3")
+id = "jobhunter_p1_supportive"
+label = "That's exciting! What field?"
+tone = "curious"
+effects = {"relationship": 1, "memory": "job_hunting_started"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_encouraging"]
+script = ExtResource("3")
+id = "jobhunter_p1_encouraging"
+label = "Good for you! Change can be great."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "job_hunting_started"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_neutral"]
+script = ExtResource("3")
+id = "jobhunter_p1_neutral"
+label = "Oh, I see. Good luck with that."
+tone = "neutral"
+effects = {"memory": "job_hunting_started"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "jobhunter_p1_main"
+speaker = "customer"
+text = "So... I'm officially in job hunting mode. Left my old position last month. It's terrifying but also kind of liberating?"
+reactions = [SubResource("reaction_supportive"), SubResource("reaction_encouraging"), SubResource("reaction_neutral")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "storyline_jobhunter_part1"
+category = "smalltalk"
+weight = 0.8
+lines = [SubResource("line_main")]
+personality_weights = {"chatty": 1.5, "anxious": 1.3, "cheerful": 1.0}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = ["job_hunting_started"]
+triggers_storyline = "jobhunter_storyline"
+tags = ["career", "personal", "storyline"]

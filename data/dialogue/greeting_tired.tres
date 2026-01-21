@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_sympathize"]
+script = ExtResource("3")
+id = "tired_greet_sympathize"
+label = "Rough night? I'll make it extra strong."
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_humor"]
+script = ExtResource("3")
+id = "tired_greet_humor"
+label = "Coffee IV drip, coming up!"
+tone = "humorous"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_practical"]
+script = ExtResource("3")
+id = "tired_greet_practical"
+label = "One coffee coming right up."
+tone = "neutral"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "tired_greet_main"
+speaker = "customer"
+text = "*yawns* Hey... *yawns again* Sorry. Didn't sleep much. Really need that caffeine..."
+reactions = [SubResource("reaction_sympathize"), SubResource("reaction_humor"), SubResource("reaction_practical")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "greeting_tired"
+category = "greeting"
+weight = 1.0
+lines = [SubResource("line_main")]
+personality_weights = {"tired": 3.0}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["personality", "tired"]

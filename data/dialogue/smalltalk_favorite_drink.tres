@@ -1,0 +1,113 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_agree"]
+script = ExtResource("3")
+id = "drink_agree"
+label = "Great choice!"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = "drink_story"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_curious"]
+script = ExtResource("3")
+id = "drink_curious"
+label = "What do you like about it?"
+tone = "curious"
+effects = {"relationship": 1}
+next_line_id = "drink_reason"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_suggest"]
+script = ExtResource("3")
+id = "drink_suggest"
+label = "Ever tried something different?"
+tone = "curious"
+effects = {}
+next_line_id = "drink_adventurous"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_story_nice"]
+script = ExtResource("3")
+id = "drink_story_nice"
+label = "That's sweet."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "knows_drink_story"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_story_relate"]
+script = ExtResource("3")
+id = "drink_story_relate"
+label = "Coffee memories are the best."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "knows_drink_story"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_adventurous_yes"]
+script = ExtResource("3")
+id = "drink_adventurous_yes"
+label = "I love that attitude!"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_drink_main"]
+script = ExtResource("2")
+id = "drink_main"
+speaker = "customer"
+text = "You know, I've been ordering {drink} here for months. It's kind of become my thing."
+reactions = [SubResource("reaction_agree"), SubResource("reaction_curious"), SubResource("reaction_suggest")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_drink_story"]
+script = ExtResource("2")
+id = "drink_story"
+speaker = "customer"
+text = "My dad used to make it the same way. Every Sunday morning. This tastes like home."
+reactions = [SubResource("reaction_story_nice"), SubResource("reaction_story_relate")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_drink_reason"]
+script = ExtResource("2")
+id = "drink_reason"
+speaker = "customer"
+text = "It's the perfect balance, you know? Not too strong, not too weak. Just right for thinking."
+reactions = [SubResource("reaction_story_nice"), SubResource("reaction_story_relate")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_drink_adventurous"]
+script = ExtResource("2")
+id = "drink_adventurous"
+speaker = "customer"
+text = "Maybe next time! I'm usually a creature of habit, but you make it sound tempting."
+reactions = [SubResource("reaction_adventurous_yes")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "smalltalk_favorite_drink"
+category = "smalltalk"
+weight = 1.1
+lines = [SubResource("line_drink_main"), SubResource("line_drink_story"), SubResource("line_drink_reason"), SubResource("line_drink_adventurous")]
+personality_weights = {"chill": 1.4, "chatty": 1.3, "shy": 0.8}
+min_relationship = 2
+max_relationship = -1
+required_memories = []
+blocked_by_memories = ["knows_drink_story"]
+triggers_storyline = ""
+tags = ["coffee", "personal", "drinks", "nostalgia"]

@@ -1,0 +1,103 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_celebrate"]
+script = ExtResource("3")
+id = "writer_p3_celebrate"
+label = "Congratulations! That's huge!"
+tone = "supportive"
+effects = {"relationship": 2, "memory": "writer_chapter_celebrated"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_read"]
+script = ExtResource("3")
+id = "writer_p3_read"
+label = "Read me your favorite line?"
+tone = "curious"
+effects = {"relationship": 1}
+next_line_id = "writer_p3_reading"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_neutral"]
+script = ExtResource("3")
+id = "writer_p3_neutral"
+label = "One chapter down, many to go."
+tone = "neutral"
+effects = {"memory": "writer_chapter_celebrated"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_reading_love"]
+script = ExtResource("3")
+id = "writer_p3_reading_love"
+label = "That's beautiful!"
+tone = "supportive"
+effects = {"relationship": 2, "memory": "writer_shared_excerpt", "flag": "heard_novel_excerpt"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_reading_coffee"]
+script = ExtResource("3")
+id = "writer_p3_reading_coffee"
+label = "I love the coffee metaphor."
+tone = "humorous"
+effects = {"relationship": 1, "memory": "writer_shared_excerpt", "flag": "heard_novel_excerpt"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_reading_more"]
+script = ExtResource("3")
+id = "writer_p3_reading_more"
+label = "I want to read more someday."
+tone = "supportive"
+effects = {"relationship": 2, "memory": "writer_shared_excerpt", "flag": "heard_novel_excerpt"}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "writer_p3_main"
+speaker = "customer"
+text = "I did it! I finally finished chapter one! It took three rewrites but I'm actually proud of it."
+reactions = [SubResource("reaction_celebrate"), SubResource("reaction_read"), SubResource("reaction_neutral")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_reading"]
+script = ExtResource("2")
+id = "writer_p3_reading"
+speaker = "customer"
+text = "*clears throat* \"The coffee grew cold as she stared at the blank page, not knowing that the best stories begin with an empty cup.\""
+reactions = [SubResource("reaction_reading_love"), SubResource("reaction_reading_coffee"), SubResource("reaction_reading_more")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_thanks"]
+script = ExtResource("2")
+id = "writer_p3_thanks"
+speaker = "customer"
+text = "Thanks for always listening. It means more than you know."
+reactions = []
+condition = ""
+ends_conversation = true
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "storyline_writer_part3"
+category = "story_beat"
+weight = 2.0
+lines = [SubResource("line_main"), SubResource("line_reading"), SubResource("line_thanks")]
+personality_weights = {"chatty": 1.3, "cheerful": 1.5}
+min_relationship = 2
+max_relationship = -1
+required_memories = ["writer_struggles_shared"]
+blocked_by_memories = ["writer_chapter_celebrated"]
+triggers_storyline = ""
+tags = ["creative", "personal", "storyline", "happy"]

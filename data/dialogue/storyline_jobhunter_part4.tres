@@ -1,0 +1,113 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_celebrate"]
+script = ExtResource("3")
+id = "jobhunter_p4_celebrate"
+label = "Congratulations! I knew you could do it!"
+tone = "supportive"
+effects = {"relationship": 2, "memory": "job_success_celebrated"}
+next_line_id = "jobhunter_p4_happy_end"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_toast"]
+script = ExtResource("3")
+id = "jobhunter_p4_toast"
+label = "This calls for a celebration coffee! On me."
+tone = "supportive"
+effects = {"relationship": 2, "memory": "job_success_celebrated"}
+next_line_id = "jobhunter_p4_happy_end"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_curious_new"]
+script = ExtResource("3")
+id = "jobhunter_p4_curious"
+label = "When do you start?"
+tone = "curious"
+effects = {"relationship": 1, "memory": "job_success_celebrated"}
+next_line_id = "jobhunter_p4_happy_end"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_comfort"]
+script = ExtResource("3")
+id = "jobhunter_p4_comfort"
+label = "I'm so sorry. Their loss, truly."
+tone = "supportive"
+effects = {"relationship": 2, "memory": "job_rejection_supported"}
+next_line_id = "jobhunter_p4_sad_end"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_practical_reject"]
+script = ExtResource("3")
+id = "jobhunter_p4_practical"
+label = "Something better will come. I believe that."
+tone = "supportive"
+effects = {"relationship": 1, "memory": "job_rejection_supported"}
+next_line_id = "jobhunter_p4_sad_end"
+condition = ""
+
+[sub_resource type="Resource" id="reaction_humor_reject"]
+script = ExtResource("3")
+id = "jobhunter_p4_humor"
+label = "More time to enjoy coffee here then!"
+tone = "humorous"
+effects = {"relationship": 1, "memory": "job_rejection_joked"}
+next_line_id = "jobhunter_p4_sad_end"
+condition = ""
+
+[sub_resource type="Resource" id="line_got_job"]
+script = ExtResource("2")
+id = "jobhunter_p4_got_job"
+speaker = "customer"
+text = "I GOT THE JOB! They called yesterday! I start in two weeks! I can't believe it actually happened!"
+reactions = [SubResource("reaction_celebrate"), SubResource("reaction_toast"), SubResource("reaction_curious_new")]
+condition = "relationship >= 2"
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_no_job"]
+script = ExtResource("2")
+id = "jobhunter_p4_no_job"
+speaker = "customer"
+text = "They... they went with someone else. Said I was great but... I don't know. Back to square one, I guess."
+reactions = [SubResource("reaction_comfort"), SubResource("reaction_practical_reject"), SubResource("reaction_humor_reject")]
+condition = "relationship < 2"
+ends_conversation = false
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_happy_end"]
+script = ExtResource("2")
+id = "jobhunter_p4_happy_end"
+speaker = "customer"
+text = "Thank you for being here through all of this. Seriously. The coffee and the pep talks got me through. I'll still come by - can't give up my favorite spot!"
+reactions = []
+condition = ""
+ends_conversation = true
+next_line_id = ""
+
+[sub_resource type="Resource" id="line_sad_end"]
+script = ExtResource("2")
+id = "jobhunter_p4_sad_end"
+speaker = "customer"
+text = "Thanks for listening. *sighs* I'll keep trying. And I'll keep coming back here - at least this place always makes me feel a little better."
+reactions = []
+condition = ""
+ends_conversation = true
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "storyline_jobhunter_part4"
+category = "story_beat"
+weight = 2.5
+lines = [SubResource("line_got_job"), SubResource("line_no_job"), SubResource("line_happy_end"), SubResource("line_sad_end")]
+personality_weights = {"chatty": 1.4, "anxious": 1.2, "cheerful": 1.3}
+min_relationship = 0
+max_relationship = -1
+required_memories = ["player_reassured_post_interview", "player_distracted_post_interview", "player_realistic_post_interview"]
+blocked_by_memories = ["job_success_celebrated", "job_rejection_supported", "job_rejection_joked"]
+triggers_storyline = ""
+tags = ["career", "personal", "storyline", "emotional", "conclusion"]

@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="DialogueTemplate" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_template.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/resources/reaction.gd" id="3"]
+
+[sub_resource type="Resource" id="reaction_warm"]
+script = ExtResource("3")
+id = "shy_greet_warm"
+label = "Take your time, no rush."
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_casual"]
+script = ExtResource("3")
+id = "shy_greet_casual"
+label = "Hey there! What can I get you?"
+tone = "neutral"
+effects = {}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="reaction_quiet"]
+script = ExtResource("3")
+id = "shy_greet_quiet"
+label = "*nods gently*"
+tone = "supportive"
+effects = {"relationship": 1}
+next_line_id = ""
+condition = ""
+
+[sub_resource type="Resource" id="line_main"]
+script = ExtResource("2")
+id = "shy_greet_main"
+speaker = "customer"
+text = "Oh, um... hi. *glances down* Sorry, I'm still deciding..."
+reactions = [SubResource("reaction_warm"), SubResource("reaction_casual"), SubResource("reaction_quiet")]
+condition = ""
+ends_conversation = false
+next_line_id = ""
+
+[resource]
+script = ExtResource("1")
+id = "greeting_shy"
+category = "greeting"
+weight = 1.0
+lines = [SubResource("line_main")]
+personality_weights = {"shy": 3.0}
+min_relationship = 0
+max_relationship = -1
+required_memories = []
+blocked_by_memories = []
+triggers_storyline = ""
+tags = ["personality", "shy"]
