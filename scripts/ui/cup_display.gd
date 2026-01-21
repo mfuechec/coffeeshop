@@ -4,6 +4,15 @@ extends Control
 var ingredients: Array[String] = []
 var has_cup: bool = false
 
+# Steam effect
+var steam_particles: Array[Dictionary] = []
+var steam_timer: float = 0.0
+const STEAM_SPAWN_RATE := 0.12
+const MAX_STEAM_PARTICLES := 8
+
+# Hot ingredients that produce steam
+const HOT_INGREDIENTS := ["espresso", "milk", "water", "chai", "chocolate"]
+
 # Ingredient colors for visual representation
 const INGREDIENT_COLORS := {
 	"espresso": Color(0.25, 0.15, 0.1),      # Dark brown
@@ -25,6 +34,58 @@ func set_ingredients(new_ingredients: Array) -> void:
 		ingredients.append(str(ing))
 	has_cup = not ingredients.is_empty() or get_parent().has_cup if get_parent() else false
 	queue_redraw()
+
+
+func _process(delta: float) -> void:
+	if not has_cup or not _has_hot_ingredients():
+		steam_particles.clear()
+		return
+
+	# Spawn steam particles
+	steam_timer += delta
+	if steam_timer >= STEAM_SPAWN_RATE and steam_particles.size() < MAX_STEAM_PARTICLES:
+		steam_timer = 0.0
+		_spawn_steam_particle()
+
+	# Update steam particles
+	var to_remove: Array[int] = []
+	for i in range(steam_particles.size()):
+		var p: Dictionary = steam_particles[i]
+		p.age += delta
+		p.y -= 25.0 * delta  # Rise speed
+		p.x += sin(p.age * 3.0 + p.phase) * 10.0 * delta  # Drift
+		p.alpha = 1.0 - (p.age / 1.2)  # Fade out
+		p.size = lerpf(2.0, 5.0, p.age / 1.2)  # Grow
+
+		if p.age >= 1.2:
+			to_remove.append(i)
+
+	for i in range(to_remove.size() - 1, -1, -1):
+		steam_particles.remove_at(to_remove[i])
+
+	queue_redraw()
+
+
+func _has_hot_ingredients() -> bool:
+	for ing in ingredients:
+		if ing in HOT_INGREDIENTS:
+			return true
+	# Cold drink if only ice
+	if "ice" in ingredients:
+		return false
+	return not ingredients.is_empty()
+
+
+func _spawn_steam_particle() -> void:
+	var center := size / 2
+	steam_particles.append({
+		"x": center.x + randf_range(-15.0, 15.0),
+		"y": size.y * 0.15,  # Top of cup
+		"age": 0.0,
+		"phase": randf() * TAU,
+		"size": 2.0,
+		"alpha": 1.0
+	})
 
 
 func _draw() -> void:
@@ -101,6 +162,15 @@ func _draw() -> void:
 		CUP_SHADOW,
 		3.0
 	)
+
+	# Draw steam particles
+	_draw_steam()
+
+
+func _draw_steam() -> void:
+	for p in steam_particles:
+		var steam_color := Color(1.0, 1.0, 1.0, p.alpha * 0.5)
+		draw_circle(Vector2(p.x, p.y), p.size, steam_color)
 
 
 func _draw_foam(center: Vector2, width: float, y: float) -> void:

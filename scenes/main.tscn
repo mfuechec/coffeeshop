@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwr24xrkpe7av"]
+[gd_scene load_steps=13 format=3 uid="uid://bwr24xrkpe7av"]
 
 [ext_resource type="Script" uid="uid://bk1gx5td0hitp" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/ui/customer_avatar.gd" id="2_avatar"]
 [ext_resource type="Script" path="res://scripts/ui/shop_background.gd" id="3_background"]
 [ext_resource type="Script" path="res://scripts/ui/interactive_station.gd" id="4_drink_station"]
 [ext_resource type="Script" path="res://scripts/ui/dialogue_ui.gd" id="5_dialogue_ui"]
+[ext_resource type="Script" path="res://scripts/ui/time_lighting.gd" id="6_time_lighting"]
+[ext_resource type="Script" path="res://scripts/ui/weather_controller.gd" id="7_weather"]
+[ext_resource type="Script" path="res://scripts/ui/passerby_spawner.gd" id="8_passerby"]
+[ext_resource type="Script" path="res://scripts/ui/ambient_customer.gd" id="9_ambient"]
+[ext_resource type="Script" path="res://scripts/ui/window_clouds.gd" id="10_clouds"]
+[ext_resource type="Script" path="res://scripts/ui/background_manager.gd" id="11_bg_manager"]
+[ext_resource type="Script" path="res://scripts/ui/window_debug_overlay.gd" id="12_debug"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -15,7 +22,18 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
 
+[node name="BackgroundImage" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("11_bg_manager")
+
+
 [node name="Background" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,6 +41,29 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_background")
+
+[node name="AmbientLighting" type="CanvasModulate" parent="."]
+script = ExtResource("6_time_lighting")
+
+[node name="WindowViewport" type="Control" parent="."]
+visible = true
+clip_contents = true
+layout_mode = 1
+anchors_preset = 0
+
+[node name="WindowClouds" type="Node2D" parent="WindowViewport"]
+script = ExtResource("10_clouds")
+
+[node name="WeatherEffects" type="Node2D" parent="WindowViewport"]
+script = ExtResource("7_weather")
+
+[node name="PasserbySpawner" type="Node2D" parent="WindowViewport"]
+visible = false
+script = ExtResource("8_passerby")
+
+[node name="AmbientCustomers" type="Node2D" parent="."]
+visible = false
+script = ExtResource("9_ambient")
 
 [node name="ShopView" type="Control" parent="."]
 layout_mode = 1
@@ -37,10 +78,10 @@ visible = false
 
 [node name="CustomerArea" type="Control" parent="ShopView"]
 layout_mode = 1
-anchor_left = 0.32
-anchor_top = 0.12
-anchor_right = 0.68
-anchor_bottom = 0.62
+anchor_left = 0.35
+anchor_top = 0.25
+anchor_right = 0.65
+anchor_bottom = 0.68
 
 [node name="CustomerAvatar" type="Control" parent="ShopView/CustomerArea"]
 layout_mode = 1
@@ -67,6 +108,14 @@ text = "$100"
 [node name="Spacer" type="Control" parent="UI/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="ThemeButton" type="Button" parent="UI/TopBar"]
+layout_mode = 2
+text = "Theme"
+
+[node name="DebugButton" type="Button" parent="UI/TopBar"]
+layout_mode = 2
+text = "Debug"
 
 [node name="ReputationLabel" type="Label" parent="UI/TopBar"]
 layout_mode = 2
@@ -125,3 +174,15 @@ grow_horizontal = 0
 [node name="QueueLabel" type="Label" parent="UI/QueueIndicator"]
 layout_mode = 2
 text = "Queue: 0"
+
+[node name="WindowDebugOverlay" type="Control" parent="."]
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("12_debug")
+

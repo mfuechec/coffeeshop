@@ -7,6 +7,15 @@ extends Control
 @onready var queue_label: Label = $UI/QueueIndicator/QueueLabel
 @onready var customer_avatar: Control = $ShopView/CustomerArea/CustomerAvatar
 @onready var drink_station: Control = $UI/DrinkStation
+@onready var background: Control = $Background
+@onready var background_image: TextureRect = $BackgroundImage
+@onready var theme_button: Button = $UI/TopBar/ThemeButton
+@onready var debug_button: Button = $UI/TopBar/DebugButton
+@onready var window_viewport: Control = $WindowViewport
+@onready var window_clouds: Node2D = $WindowViewport/WindowClouds
+@onready var weather_effects: Node2D = $WindowViewport/WeatherEffects
+@onready var passerby_spawner: Node2D = $WindowViewport/PasserbySpawner
+@onready var window_debug: Control = $WindowDebugOverlay
 
 var current_customer: Dictionary = {}
 var dialogue_state: String = "idle"
@@ -24,8 +33,94 @@ func _ready() -> void:
 	# Connect to DialogueManager signals
 	DialogueManager.conversation_ended.connect(_on_dialogue_ended)
 
+	# Connect theme button
+	if theme_button:
+		theme_button.pressed.connect(_on_theme_button_pressed)
+
+	# Connect debug button
+	if debug_button:
+		debug_button.pressed.connect(_on_debug_button_pressed)
+
+	# Connect background theme changes
+	if background_image:
+		background_image.shop_theme_changed.connect(_on_background_theme_changed)
+
+	# Setup window viewport after first frame
+	await get_tree().process_frame
+	_setup_window_viewport()
+
+	# Connect debug overlay to background manager
+	if window_debug and background_image:
+		window_debug.set_background_manager(background_image)
+
+	# Connect resize and time signals
+	resized.connect(_on_resized)
+	if background_image:
+		background_image.resized.connect(_on_background_resized)
+	TimeManager.time_of_day_changed.connect(_on_time_of_day_changed_for_effects)
+
 	_update_ui()
 	_show_welcome_message()
+
+
+func _on_resized() -> void:
+	await get_tree().process_frame
+	_setup_window_viewport()
+
+
+func _on_background_resized() -> void:
+	# Background image size changed, update window viewport
+	_setup_window_viewport()
+
+
+func _on_time_of_day_changed_for_effects(period: String) -> void:
+	if window_clouds:
+		window_clouds.set_night_mode(period == "night")
+
+
+func _setup_window_viewport() -> void:
+	if not background_image:
+		return
+
+	# Get the combined window bounds from the background manager
+	var window_rect: Rect2 = background_image.get_combined_window_bounds()
+
+	# Position and size the clipping viewport to match the window area
+	if window_viewport:
+		window_viewport.position = window_rect.position
+		window_viewport.size = window_rect.size
+
+	# Pass local bounds (relative to viewport) to children
+	var local_rect := Rect2(Vector2.ZERO, window_rect.size)
+
+	if window_clouds:
+		window_clouds.set_window_size(window_rect.size)
+		window_clouds.set_night_mode(TimeManager.get_period_name() == "night")
+
+	if weather_effects:
+		weather_effects.set_window_bounds(local_rect)
+
+	if passerby_spawner:
+		passerby_spawner.set_window_bounds(local_rect)
+
+
+func _on_theme_button_pressed() -> void:
+	if background_image:
+		background_image.cycle_theme()
+
+
+func _on_debug_button_pressed() -> void:
+	print("Debug button pressed, window_debug=", window_debug)
+	if window_debug:
+		window_debug.toggle_debug()
+	else:
+		print("ERROR: window_debug is null!")
+
+
+func _on_background_theme_changed(theme_name: String) -> void:
+	# Update window viewport for new theme's window positions
+	_setup_window_viewport()
+	dialogue_panel.show_message("Theme changed to: %s" % theme_name)
 
 
 func _process(_delta: float) -> void:
